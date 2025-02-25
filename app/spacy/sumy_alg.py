@@ -7,7 +7,7 @@ import nltk
 nltk.download('punkt')
 
 def summarize_paragraph(paragraph: str, r:int=200):
-
+    sld = 400
     summarized_list = []
 
     parser = PlaintextParser.from_string(paragraph, Tokenizer("english"))
@@ -15,7 +15,7 @@ def summarize_paragraph(paragraph: str, r:int=200):
     summarizer = LsaSummarizer(Stemmer("english"))
     summarizer.stop_words = get_stop_words("english")
 
-    sentences_count = round(len(paragraph) / r)
+    sentences_count = round(len(paragraph) / (sld - r))
 
     summary = summarizer(parser.document, sentences_count if sentences_count > 0 else 1)
     for sentence in summary:
