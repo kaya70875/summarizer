@@ -7,21 +7,23 @@ import nltk
 nltk.download('punkt')
 
 def summarize_paragraph(paragraph: str, r:int=200):
-    sld = 400
-    summarized_list = []
+    try:
+        sld = 400
+        summarized_list = []
 
-    parser = PlaintextParser.from_string(paragraph, Tokenizer("english"))
+        parser = PlaintextParser.from_string(paragraph, Tokenizer("english"))
 
-    summarizer = LsaSummarizer(Stemmer("english"))
-    summarizer.stop_words = get_stop_words("english")
+        summarizer = LsaSummarizer(Stemmer("english"))
+        summarizer.stop_words = get_stop_words("english")
 
-    sentences_count = round(len(paragraph) / (sld - r))
+        sentences_count = round(len(paragraph) / (sld - r if r != 400 else 1))
+        summary = summarizer(parser.document, sentences_count if sentences_count > 0 else 1)
+        for sentence in summary:
+            summarized_list.append(sentence._text)
 
-    summary = summarizer(parser.document, sentences_count if sentences_count > 0 else 1)
-    for sentence in summary:
-        summarized_list.append(sentence._text)
-
-    return summarized_list
+        return summarized_list
+    except Exception as exc:
+        print(f'An error occured while summarize paragraph {exc}')
 
 def calculate_efficiency(summary, paragraph: str):    
     summaryC = 0
