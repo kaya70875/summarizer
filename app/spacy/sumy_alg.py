@@ -3,8 +3,6 @@ from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lsa import LsaSummarizer
 from sumy.nlp.stemmers import Stemmer
 from sumy.utils import get_stop_words
-import nltk
-nltk.download('punkt')
 
 def summarize_paragraph(paragraph: str, r:int=200):
     try:
