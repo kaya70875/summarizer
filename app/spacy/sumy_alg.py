@@ -32,15 +32,4 @@ def summarize_paragraph(paragraph: str, summary_ratio: float = 0.3):
         return summarized_list
     except Exception as exc:
         print(f'An error occured while summarize paragraph {exc}')
-
-def calculate_efficiency(summary, paragraph: str):
-    try:
-        summaryC = 0
-        for sentence in summary:
-            summaryC += len(sentence)
-
-        efficiency = round(abs(((summaryC - len(paragraph)) / len(paragraph)) * 100), 2)
-        return efficiency
-    except Exception as e:
-        print(f'An error occured while calculating efficiency {e}')
     
