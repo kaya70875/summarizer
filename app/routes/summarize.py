@@ -8,9 +8,9 @@ router = APIRouter()
 # Define a request model for input validation
 class SummarizeRequest(BaseModel):
     paragraph: str
-    r: int = 200
+    r: float = 0.3
 
-@router.post("/summarize/" , response_model= SummarizeResponseModel, description="Summarize a text")
+@router.post("/summarize" , response_model= SummarizeResponseModel, description="Summarize an article")
 async def summarize_text(request: SummarizeRequest):
     try:
         if not request.paragraph.strip():  # Ensure the text is not empty or just whitespace
@@ -21,4 +21,5 @@ async def summarize_text(request: SummarizeRequest):
 
         return {"summary": summary, "efficiency": efficiency}
     except Exception as e:
+        print(e)
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")

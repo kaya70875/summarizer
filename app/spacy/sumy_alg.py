@@ -4,18 +4,28 @@ from sumy.summarizers.lsa import LsaSummarizer
 from sumy.nlp.stemmers import Stemmer
 from sumy.utils import get_stop_words
 
-def summarize_paragraph(paragraph: str, r:int=200):
+def summarize_paragraph(paragraph: str, summary_ratio: float = 0.3):
+
+    """
+    Summarizes a paragraph using a ratio of the original number of sentences.
+    :param paragraph: The text to summarize.
+    :param summary_ratio: The fraction of sentences to keep (e.g., 0.3 for 30%).
+    """
+
     try:
-        sld = 400
         summarized_list = []
-
+        
         parser = PlaintextParser.from_string(paragraph, Tokenizer("english"))
+        original_sentences = list(parser.document.sentences)
+        total_sentences = len(original_sentences)
 
+        # Calculate the target number of sentences based on the original sentence count.
+        target_sentence_count = max(1, round(total_sentences * summary_ratio))
+        
         summarizer = LsaSummarizer(Stemmer("english"))
         summarizer.stop_words = get_stop_words("english")
+        summary = summarizer(parser.document, target_sentence_count)
 
-        sentences_count = round(len(paragraph) / (sld - r if r != 400 else 1))
-        summary = summarizer(parser.document, sentences_count if sentences_count > 0 else 1)
         for sentence in summary:
             summarized_list.append(sentence._text)
 
@@ -23,11 +33,14 @@ def summarize_paragraph(paragraph: str, r:int=200):
     except Exception as exc:
         print(f'An error occured while summarize paragraph {exc}')
 
-def calculate_efficiency(summary, paragraph: str):    
-    summaryC = 0
-    for sentence in summary:
-        summaryC += len(sentence)
+def calculate_efficiency(summary, paragraph: str):
+    try:
+        summaryC = 0
+        for sentence in summary:
+            summaryC += len(sentence)
 
-    efficiency = round(abs(((summaryC - len(paragraph)) / len(paragraph)) * 100), 2)
-    return efficiency
+        efficiency = round(abs(((summaryC - len(paragraph)) / len(paragraph)) * 100), 2)
+        return efficiency
+    except Exception as e:
+        print(f'An error occured while calculating efficiency {e}')
     
