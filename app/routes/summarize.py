@@ -8,7 +8,7 @@ router = APIRouter()
 # Define a request model for input validation
 class SummarizeRequest(BaseModel):
     paragraph: str
-    r: float = 0.3
+    r: float = 0.5
 
 @router.post("/summarize" , response_model= SummarizeResponseModel, description="Summarize an article")
 async def summarize_text(request: SummarizeRequest):

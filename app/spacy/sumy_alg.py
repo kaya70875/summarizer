@@ -4,12 +4,12 @@ from sumy.summarizers.lsa import LsaSummarizer
 from sumy.nlp.stemmers import Stemmer
 from sumy.utils import get_stop_words
 
-def summarize_paragraph(paragraph: str, summary_ratio: float = 0.3):
+def summarize_paragraph(paragraph: str, summary_ratio: float = 0.5):
 
     """
     Summarizes a paragraph using a ratio of the original number of sentences.
     :param paragraph: The text to summarize.
-    :param summary_ratio: The fraction of sentences to keep (e.g., 0.3 for 30%).
+    :param summary_ratio: The fraction of sentences to keep (e.g., 0.5 for 30%).
     """
 
     try:
